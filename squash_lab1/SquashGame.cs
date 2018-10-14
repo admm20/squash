@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Runtime.InteropServices;
 
@@ -36,6 +38,26 @@ namespace squash_lab1
         Texture2D ball_tex;
         Texture2D wall_tex;
         Texture2D goal_tex;
+
+        //Sounds
+        SoundEffect ball_tick;
+        SoundEffect game_coin;
+        SoundEffect game_over;
+        SoundEffect game_over_arcade;
+        SoundEffect shot_bump;
+        SoundEffect shot;
+        SoundEffect fail;
+
+        //Volume
+        float volume = 1.0f;
+        float pitch = 0.0f;
+        float pan = 0.0f;
+
+
+        // Score, lives, font(fontfamily = Code - it can be configurate in file .spritefont)
+        public int score = 0;
+        public int lives = 3;
+        private SpriteFont font;
 
 
         // used to keep cursor inside window
@@ -79,8 +101,23 @@ namespace squash_lab1
 
             paddle_tex = Content.Load<Texture2D>("Textures/paddle");
             ball_tex = Content.Load<Texture2D>("Textures/ball");
-            goal_tex = Content.Load<Texture2D>("Textures/goal");
-            wall_tex = Content.Load<Texture2D>("Textures/wall");
+            //goal_tex = Content.Load<Texture2D>("Textures/goal");
+            goal_tex = Content.Load<Texture2D>("Textures/goal1");
+            //wall_tex = Content.Load<Texture2D>("Textures/wall");
+            wall_tex = Content.Load<Texture2D>("Textures/wall1");
+
+            font = Content.Load<SpriteFont>("Fonts/Score");
+
+            //sounds
+            ball_tick = Content.Load<SoundEffect>("Sounds/ball-tick");
+            game_coin = Content.Load<SoundEffect>("Sounds/game-coin");
+            game_over = Content.Load<SoundEffect>("Sounds/game-over");
+            game_over_arcade = Content.Load<SoundEffect>("Sounds/game-over-arcade");
+            shot = Content.Load<SoundEffect>("Sounds/shot");
+            shot_bump = Content.Load<SoundEffect>("Sounds/phone-bump");
+            fail = Content.Load<SoundEffect>("Sounds/fail");
+
+         
         }
 
         /// <summary>
@@ -119,6 +156,40 @@ namespace squash_lab1
 
             ball.Update_position(gameTime.ElapsedGameTime.Milliseconds);
 
+            // if you score a goal
+            if (ball.isGoal)
+            {
+                score++;  
+                ball.isGoal = false;
+                game_coin.Play(volume,pitch,pan);
+            }
+
+            // if you failed
+
+            if (ball.isFail)
+            {
+                ball.isFail = false;
+                if (lives >= 1)
+                {
+                    lives--;
+                    fail.Play(volume - 0.5f, pitch, pan);
+                }
+                else
+                {
+                    //gameover
+                    score = 0;
+                    lives = 3;
+                    //game_over.Play(volume, pitch, pan);
+                    game_over_arcade.Play(volume, pitch, pan);
+
+                }
+            }
+
+            //if you hit a paddle
+            if (ball.isInPaddle)
+            {
+                shot.Play(volume, pitch, pan);
+            }
 
             base.Update(gameTime);
         }
@@ -137,6 +208,9 @@ namespace squash_lab1
             spriteBatch.Draw(wall_tex, wall_right.position, Color.White);
             spriteBatch.Draw(goal_tex, goal.position, Color.White);
             spriteBatch.Draw(ball_tex, ball.position, Color.White);
+            spriteBatch.DrawString(font, "Score  " + score, new Vector2(30,50), Color.White);
+            spriteBatch.DrawString(font, "Lives  " + lives, new Vector2(WINDOW_WIDTH - 150, 50), Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

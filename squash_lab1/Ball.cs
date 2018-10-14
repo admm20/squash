@@ -21,10 +21,11 @@ namespace squash_lab1
 
     class Ball : Collision
     {
-
         public Velocity speed;
         
-        bool isInPaddle = false;
+        public bool isInPaddle = false;
+        public bool isGoal = false;
+        public bool isFail = false;
 
         public Ball(Rectangle position)
         {
@@ -81,7 +82,7 @@ namespace squash_lab1
                     }
 
                     if (gameObject.type.Equals(GameObjectType.PADDLE))
-                    {
+                    {                 
                         isInPaddle = true;
                     }
 
@@ -92,12 +93,15 @@ namespace squash_lab1
                         position.Y = 400;
                         speed.x_direction = 0.3;
                         speed.y_direction = -0.3;
+
+                        isFail = true;
                     }
 
                     if (gameObject.type.Equals(GameObjectType.GOAL))
                     {
                         // PUNKT DLA GRYFFINDORU
                         Console.WriteLine("Masz punkt");
+                        isGoal = true;                 
                     }
 
                     break;
