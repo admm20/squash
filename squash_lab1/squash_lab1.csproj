@@ -43,8 +43,12 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="GameMode.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="LoseArea.cs" />
+    <Compile Include="MainMenu.cs" />
+    <Compile Include="OnSplash.cs" />
+    <Compile Include="ProgramState.cs" />
     <Compile Include="SquashGame.cs" />
     <Compile Include="Goal.cs" />
     <Compile Include="Paddle.cs" />
