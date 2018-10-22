@@ -10,33 +10,31 @@ using System.Threading.Tasks;
 
 namespace squash_lab1
 {
-    class OnSplash
+    class OnSplash : ProgramState
     {
-        private SquashGame game = null;
 
         private Texture2D splashArt = null;
 
-        public void Update()
-        {
-            if (game.keyboardState.IsKeyDown(Keys.Enter))
-            {
-                game.state = ProgramState.MAIN_MENU;
-            }
-        }
-
-        public void LoadTextures(ContentManager content)
+        public override void LoadTextures(ContentManager content)
         {
             splashArt = content.Load<Texture2D>("Textures/Menu/background");
         }
 
-        public void DrawSplash(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(splashArt, new Rectangle(0, 0, 900, 600), Color.White);
         }
 
-        public OnSplash(SquashGame game)
+        public override void Update(double delta, SquashGame game)
         {
-            this.game = game;
+            game.ShowCursor();
+            // if any key is pressed
+            if(game.keyboardState.GetPressedKeys().Length > 0 ||
+                game.mouseState.LeftButton == ButtonState.Pressed)
+            {
+                game.ShowMainMenu();
+            }
         }
+        
     }
 }

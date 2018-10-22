@@ -27,8 +27,11 @@ namespace squash_lab1
         public bool isGoal = false;
         public bool isFail = false;
 
+        public GameMode game;
+
         public Ball(Rectangle position)
         {
+            
             base.position = position;
             type = GameObjectType.BALL;
 
@@ -61,6 +64,22 @@ namespace squash_lab1
                     if (ratio < gameObject.side_ratio && !isInPaddle)
                     {
                         speed.y_direction *= -1;
+                        if (gameObject.type.Equals(GameObjectType.PADDLE))
+                        {
+                            game.player_turn = !game.player_turn;
+                            if (game.player_turn)
+                            {
+                                ListOfObjectsWithCollision.Add(game.paddle);
+                                ListOfObjectsWithCollision.Remove(game.paddle_opponent);
+                            }
+                            else
+                            {
+                                ListOfObjectsWithCollision.Add(game.paddle_opponent);
+                                ListOfObjectsWithCollision.Remove(game.paddle);
+
+                            }
+
+                        }
                     }
                     else
                     {
@@ -112,6 +131,6 @@ namespace squash_lab1
             }
             
         }
-
+        
     }
 }

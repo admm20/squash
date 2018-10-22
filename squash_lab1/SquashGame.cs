@@ -18,27 +18,54 @@ namespace squash_lab1
 
     public class SquashGame : Game
     {
-
         public static int WINDOW_WIDTH = 900;
         public static int WINDOW_HEIGHT = 600;
 
-        public ProgramState state = ProgramState.SPLASH;
-
         public KeyboardState keyboardState;
-
-
+        public MouseState mouseState;
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         GameMode gameMode = new GameMode();
-        OnSplash splash = null;
+        OnSplash splash = new OnSplash();
         MainMenu menu = new MainMenu();
 
-
+        ProgramState currentState = null;
+        
+        bool clipCursor = false;
 
         // used to keep cursor inside window
         [DllImport("user32.dll")]
         static extern void ClipCursor(ref Rectangle rect);
+
+        public void ShowSplash()
+        {
+            currentState = splash;
+        }
+
+        public void ShowMainMenu()
+        {
+            currentState = menu;
+        }
+
+        public void ShowGameMode()
+        {
+            currentState = gameMode;
+            gameMode.Enter();
+        }
+
+        public void ShowCursor()
+        {
+            this.IsMouseVisible = true;
+            clipCursor = false;
+        }
+
+        public void HideCursor()
+        {
+            this.IsMouseVisible = false;
+            clipCursor = true;
+        }
 
         public SquashGame()
         {
@@ -55,7 +82,10 @@ namespace squash_lab1
             // change update frequency
             base.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 60.0);
 
-            splash = new  OnSplash(this);
+            // start game with splash screen
+            currentState = splash;
+
+
             base.Initialize();
         }
         
@@ -66,6 +96,7 @@ namespace squash_lab1
 
             splash.LoadTextures(Content);
             gameMode.LoadTextures(Content);
+            menu.LoadTextures(Content);
 
 
         }
@@ -78,12 +109,14 @@ namespace squash_lab1
         protected override void Update(GameTime gameTime)
         {
             keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
 
             // hide cursor if game window is active
-            if (IsActive)
+            if (IsActive && clipCursor)
             {
                 Rectangle rect = Window.ClientBounds;
                 rect.Width += rect.X;
@@ -93,21 +126,7 @@ namespace squash_lab1
             }
 
 
-            switch (state)
-            {
-                case ProgramState.SPLASH:
-                    splash.Update();
-                    break;
-                case ProgramState.MAIN_MENU:
-
-                    break;
-                case ProgramState.GAME:
-                    gameMode.Update(gameTime.ElapsedGameTime.Milliseconds, Mouse.GetState().Position.X);
-                    break;
-                default:
-                    // ups
-                    break;
-            }
+            currentState.Update(gameTime.ElapsedGameTime.Milliseconds, this);
 
 
 
@@ -120,21 +139,7 @@ namespace squash_lab1
 
             spriteBatch.Begin();
 
-            switch (state)
-            {
-                case ProgramState.SPLASH:
-                    splash.DrawSplash(spriteBatch);
-                    break;
-                case ProgramState.MAIN_MENU:
-
-                    break;
-                case ProgramState.GAME:
-                    gameMode.Draw(spriteBatch);
-                    break;
-                default:
-                    // ups
-                    break;
-            }
+            currentState.Draw(spriteBatch);
 
             spriteBatch.End();
 
