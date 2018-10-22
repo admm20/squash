@@ -129,14 +129,14 @@ namespace squash_lab1
             spriteBatch.Draw(wall_tex, wall_right.position, Color.White);
             spriteBatch.Draw(goal_tex, goal.position, Color.White);
             spriteBatch.Draw(ball_tex, ball.position, Color.White);
-            spriteBatch.DrawString(font, "Score  " + score, new Vector2(30, 50), Color.White);
-            spriteBatch.DrawString(font, "Lifes  " + lifes, new Vector2(WINDOW_WIDTH - 150, 50), Color.White);
+            spriteBatch.DrawString(font, "Score  " + score, new Vector2(50, 50), Color.White);
+            spriteBatch.DrawString(font, "Lifes  " + lifes, new Vector2(WINDOW_WIDTH - 140, 50), Color.White);
 
             if (end_game)
             {
                 spriteBatch.Draw(scoreboard_tex, scoreboard_rect, Color.White);
-                spriteBatch.DrawString(font, "Your score : " + score, new Vector2(scoreboard_rect.X + 20, scoreboard_rect.Y + 20), Color.White);
-                spriteBatch.DrawString(font, "Opponent score : " + enemy_score, new Vector2(scoreboard_rect.X + 20, scoreboard_rect.Y + 50), Color.White);
+                spriteBatch.DrawString(font, "Your score : " + score, new Vector2(scoreboard_rect.X + 30, scoreboard_rect.Y + 20), Color.White);
+                spriteBatch.DrawString(font, "Opponent score : " + enemy_score, new Vector2(scoreboard_rect.X + 30, scoreboard_rect.Y + 50), Color.White);
                 spriteBatch.Draw(retry_tex, retry_rect, hover == 1 ? Color.White : Color.White * 0.60f);
                 spriteBatch.Draw(quit_tex, quit_rect, hover == 2 ? Color.White : Color.White * 0.60f);
             }
