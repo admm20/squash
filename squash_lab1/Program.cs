@@ -1,5 +1,7 @@
 ﻿using System;
 
+// GRUPA 2
+
 namespace squash_lab1
 {
 #if WINDOWS || LINUX

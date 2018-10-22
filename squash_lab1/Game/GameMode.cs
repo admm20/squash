@@ -36,11 +36,11 @@ namespace squash_lab1
         Texture2D goal_tex;
 
         Texture2D scoreboard_tex;
-        Rectangle scoreboard_rect = new Rectangle(WINDOW_WIDTH / 2 - 364 / 2, WINDOW_HEIGHT / 2 - 235 / 2, 364, 235);
+        Rectangle scoreboard_rect = new Rectangle(WINDOW_WIDTH / 2 - 400 / 2, WINDOW_HEIGHT / 2 - 250 / 2, 400, 250);
         Texture2D retry_tex;
-        Rectangle retry_rect = new Rectangle(WINDOW_WIDTH / 2 - 364 / 2, WINDOW_HEIGHT / 2 - 235 / 2 + 70, 354, 71);
+        Rectangle retry_rect = new Rectangle(WINDOW_WIDTH / 2 - 400 / 2 + 25, WINDOW_HEIGHT / 2 - 250 / 2 + 79, 354, 71);
         Texture2D quit_tex;
-        Rectangle quit_rect = new Rectangle(WINDOW_WIDTH / 2 - 364 / 2, WINDOW_HEIGHT / 2 - 235 / 2 + 150, 354, 71);
+        Rectangle quit_rect = new Rectangle(WINDOW_WIDTH / 2 - 400 / 2 + 25, WINDOW_HEIGHT / 2 - 250 / 2 + 150, 354, 71);
 
         //Sounds
         SoundEffect ball_tick;
@@ -107,7 +107,7 @@ namespace squash_lab1
             wall_tex = content.Load<Texture2D>("Textures/wall1");
             scoreboard_tex = content.Load<Texture2D>("Textures/scoreboard");
             retry_tex = content.Load<Texture2D>("Textures/Menu/play_again_text");
-            quit_tex = content.Load<Texture2D>("Textures/Menu/quit-text");
+            quit_tex = content.Load<Texture2D>("Textures/Menu/back_to_menu_text");
 
             font = content.Load<SpriteFont>("Fonts/Score");
 
@@ -123,8 +123,8 @@ namespace squash_lab1
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(paddle_2_tex, paddle_opponent.position, Color.White * 0.3f);
-            spriteBatch.Draw(paddle_tex, paddle.position, Color.White);
+            spriteBatch.Draw(paddle_2_tex, paddle_opponent.position, player_turn ? Color.White * 0.5f : Color.White);
+            spriteBatch.Draw(paddle_tex, paddle.position, !player_turn ? Color.White * 0.5f : Color.White);
             spriteBatch.Draw(wall_tex, wall_left.position, Color.White);
             spriteBatch.Draw(wall_tex, wall_right.position, Color.White);
             spriteBatch.Draw(goal_tex, goal.position, Color.White);
@@ -137,8 +137,8 @@ namespace squash_lab1
                 spriteBatch.Draw(scoreboard_tex, scoreboard_rect, Color.White);
                 spriteBatch.DrawString(font, "Your score : " + score, new Vector2(scoreboard_rect.X + 20, scoreboard_rect.Y + 20), Color.White);
                 spriteBatch.DrawString(font, "Opponent score : " + enemy_score, new Vector2(scoreboard_rect.X + 20, scoreboard_rect.Y + 50), Color.White);
-                spriteBatch.Draw(retry_tex, retry_rect, hover == 1 ? Color.White : Color.White * 0.30f);
-                spriteBatch.Draw(quit_tex, quit_rect, hover == 2 ? Color.White : Color.White * 0.30f);
+                spriteBatch.Draw(retry_tex, retry_rect, hover == 1 ? Color.White : Color.White * 0.60f);
+                spriteBatch.Draw(quit_tex, quit_rect, hover == 2 ? Color.White : Color.White * 0.60f);
             }
         }
 
@@ -218,6 +218,7 @@ namespace squash_lab1
                         //gameover
                         game_over_arcade.Play(volume, pitch, pan);
                         end_game = true;
+                        ball.position.X = 10000;
                     }
                     else
                         fail.Play(volume - 0.5f, pitch, pan);

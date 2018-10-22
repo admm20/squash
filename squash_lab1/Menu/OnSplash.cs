@@ -15,6 +15,8 @@ namespace squash_lab1
 
         private Texture2D splashArt = null;
 
+        bool mouseClick = false;
+
         public override void LoadTextures(ContentManager content)
         {
             splashArt = content.Load<Texture2D>("Textures/Menu/background");
@@ -29,12 +31,20 @@ namespace squash_lab1
         {
             game.ShowCursor();
             // if any key is pressed
-            if(game.keyboardState.GetPressedKeys().Length > 0 ||
-                game.mouseState.LeftButton == ButtonState.Pressed)
+            if (game.keyboardState.GetPressedKeys().Length > 0)
             {
                 game.ShowMainMenu();
             }
+
+            if (game.mouseState.LeftButton == ButtonState.Pressed)
+            {
+                mouseClick = true;
+            }
+            else if (mouseClick == true)
+            {
+                mouseClick = false;
+                game.ShowMainMenu();
+            }
         }
-        
     }
 }
