@@ -124,13 +124,16 @@ namespace squash_lab1
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(paddle_2_tex, paddle_opponent.position, player_turn ? Color.White * 0.5f : Color.White);
+            spriteBatch.DrawString(font, "CPU", new Vector2(paddle_opponent.position.Center.X - 10, paddle_opponent.position.Center.Y - 7),
+                player_turn ? Color.White * 0.5f : Color.White, 0.0f, new Vector2(0, 0), 0.5f, new SpriteEffects(), 1.0f);
             spriteBatch.Draw(paddle_tex, paddle.position, !player_turn ? Color.White * 0.5f : Color.White);
             spriteBatch.Draw(wall_tex, wall_left.position, Color.White);
             spriteBatch.Draw(wall_tex, wall_right.position, Color.White);
             spriteBatch.Draw(goal_tex, goal.position, Color.White);
             spriteBatch.Draw(ball_tex, ball.position, Color.White);
             spriteBatch.DrawString(font, "Score  " + score, new Vector2(50, 50), Color.White);
-            spriteBatch.DrawString(font, "Lifes  " + lifes, new Vector2(WINDOW_WIDTH - 140, 50), Color.White);
+            spriteBatch.DrawString(font, "Your lifes  " + lifes, new Vector2(WINDOW_WIDTH - 160, 50), Color.White);
+            spriteBatch.DrawString(font, "CPU lifes  " + enemy_lifes, new Vector2(WINDOW_WIDTH - 160, 80), Color.White);
 
             if (end_game)
             {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace squash_lab1
 {
-    class OnSplash : ProgramState
+    class Splash : ProgramState
     {
 
         private Texture2D splashArt = null;

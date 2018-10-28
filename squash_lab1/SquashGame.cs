@@ -28,7 +28,7 @@ namespace squash_lab1
         SpriteBatch spriteBatch;
 
         GameMode gameMode = new GameMode();
-        OnSplash splash = new OnSplash();
+        Splash splash = new Splash();
         MainMenu menu = new MainMenu();
 
         ProgramState currentState = null;
@@ -80,7 +80,7 @@ namespace squash_lab1
             graphics.ApplyChanges();
 
             // change update frequency
-            base.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 60.0);
+            base.TargetElapsedTime = TimeSpan.FromSeconds(1.0 / 120.0);
 
             // start game with splash screen
             currentState = splash;

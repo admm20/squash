@@ -47,7 +47,7 @@
     <Compile Include="Game\GameObject.cs" />
     <Compile Include="Game\LoseArea.cs" />
     <Compile Include="Menu\MainMenu.cs" />
-    <Compile Include="Menu\OnSplash.cs" />
+    <Compile Include="Menu\Splash.cs" />
     <Compile Include="Interfaces\ProgramState.cs" />
     <Compile Include="SquashGame.cs" />
     <Compile Include="Game\Goal.cs" />

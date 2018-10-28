@@ -55,6 +55,7 @@ namespace squash_lab1
 
                     position.X = old_x;
                     position.Y = old_y;
+
                     // calculate distance between object and ball
                     double dist_x = Math.Abs(position.Center.X - gameObject.position.Center.X);
                     double dist_y = Math.Abs(position.Center.Y - gameObject.position.Center.Y);
@@ -64,6 +65,43 @@ namespace squash_lab1
                     if (ratio < gameObject.side_ratio && !isInPaddle)
                     {
                         speed.y_direction *= -1;
+
+                        // odbijanie pilki od paletki ma byc podobne do tego, jak jest w arkanoidach:
+                        if (gameObject.type.Equals(GameObjectType.PADDLE))
+                        {
+                            double x1 = 0.3, y1 = -0.3;
+                            if (dist_x > 40)
+                            {
+                                x1 = 0.384513829233677;
+                                y1 = -0.179301743237636;
+
+                            }
+                            
+                            if (position.Center.X < gameObject.position.Center.X - 10) // ball is on left side
+                            {
+                                speed.x_direction = -x1;
+                                speed.y_direction = y1;
+                            }
+                            else if (position.Center.X > gameObject.position.Center.X + 10)
+                            {
+                                speed.x_direction = x1;
+                                speed.y_direction = y1;
+                            }
+                            else // around middle of paddle
+                            {
+                                speed.y_direction = y1;
+                                if (speed.x_direction < 0)
+                                    speed.x_direction = -0.3;
+                                else
+                                    speed.x_direction = 0.3;
+                                   
+
+                            }
+
+                        }
+
+                        // jeżeli piłka uderzyła w paletke gracza, to usuń go z listy obiektów kolizyjnych
+                        // i dodaj przeciwnika do niej przeciwnika (i vice versa)
                         if (gameObject.type.Equals(GameObjectType.PADDLE))
                         {
                             game.player_turn = !game.player_turn;
@@ -118,8 +156,8 @@ namespace squash_lab1
 
                     if (gameObject.type.Equals(GameObjectType.GOAL))
                     {
-                        // PUNKT DLA GRYFFINDORU
-                        Console.WriteLine("Masz punkt");
+                        // PUNKT 
+                        //Console.WriteLine("Masz punkt");
                         isGoal = true;                 
                     }
 
@@ -131,6 +169,7 @@ namespace squash_lab1
             }
             
         }
+        
         
     }
 }
